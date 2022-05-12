@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
-function Editcustomer({ updateCustomer, params })
+function Editcustomer({ updateCustomer, params, linkki })
 {
     const [open, setOpen] = React.useState(false);
     const [customer, setCustomer] = React.useState({
@@ -42,7 +42,7 @@ function Editcustomer({ updateCustomer, params })
 
     const handleSave = () =>
     {
-        updateCustomer(customer, params.value);
+        updateCustomer(customer, linkki);
     }
 
     const inputChanged = (event) =>
@@ -59,7 +59,7 @@ function Editcustomer({ updateCustomer, params })
                 <DialogTitle>Edit Customer</DialogTitle>
                 <DialogContent>
                     <TextField
-                        name="firsname"
+                        name="firstname"
                         value={customer.firstname}
                         onChange={inputChanged}
                         margin="dense"

@@ -7,9 +7,10 @@ import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Snackbar from '@mui/material/Snackbar';
+import AddTaskIcon from '@mui/icons-material/AddTask';
 import Addcustomer from "./Addcustomer";
 import Editcustomer from "./Editcustomer";
-
+import AddTraining from "./AddTraining";
 
 function Customers()
 {
@@ -52,7 +53,7 @@ function Customers()
 
     const addCustomer = (customer) =>
     {
-        fetch("https://customerrest.herokuapp.com/api/customers", {
+        fetch(SERVER_URL + "/customers", {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(customer)
@@ -72,6 +73,7 @@ function Customers()
 
     const updateCustomer = (updatedCustomer, link) =>
     {
+        console.log(link)
         fetch(link, {
             method: 'PUT',
             headers: { 'Content-type': 'application/json' },
@@ -92,6 +94,25 @@ function Customers()
             .catch(err => console.error(err))
     }
 
+    const addTraining = (training) =>
+    {
+        fetch(SERVER_URL + "/trainings", {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(training)
+        })
+            .then(response =>
+            {
+                if (response.ok)
+                {
+                    //fetchTrainigs();
+                } else
+                {
+                    alert("Something went wrong!")
+                }
+            })
+            .catch(err => console.error(err))
+    }
     const columns = [
         { field: 'firstname', sortable: true, filter: true },
         { field: 'lastname', sortable: true, filter: true },
@@ -102,19 +123,32 @@ function Customers()
         { field: 'phone', sortable: true, filter: true, width: 120 },
         {
             headerName: '',
-            width: 100,
-            field: 'links[1].href',
-            cellRenderer: params => <Editcustomer updateCustomer={updateCustomer} params={params} />
+            field: 'links',
+            width: 100, cellRenderer: params =>
+            {
+                return <IconButton color='info' onClick={() => AddTraining(params.data.links[0].href)}>
+                    <AddTaskIcon />
+                </IconButton>
+            }
         },
         {
             headerName: '',
             width: 100,
-            field: 'links[1].href',
+            field: 'links',
+            cellRenderer: params => <Editcustomer updateCustomer={updateCustomer} params={params} linkki={params.data.links[0].href} />
+        },
+        {
+            headerName: '',
+            width: 100,
+            field: 'links',
             cellRenderer: params =>
-                <IconButton color='error' onClick={() => deleteCustomer(params.value)}>
+            {
+                return <IconButton color='error' onClick={() => deleteCustomer(params.data.links[0].href)}>
                     <DeleteIcon />
                 </IconButton>
+            }
         }
+
     ]
 
     return (

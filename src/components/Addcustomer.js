@@ -58,7 +58,7 @@ function Addcustomer({ addCustomer })
                 <DialogTitle>New Customer</DialogTitle>
                 <DialogContent>
                     <TextField
-                        name="firsname"
+                        name="firstname"
                         value={customer.firstname}
                         onChange={inputChanged}
                         margin="dense"

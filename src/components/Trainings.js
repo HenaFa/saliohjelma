@@ -8,6 +8,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Snackbar from '@mui/material/Snackbar';
 import dayjs from "dayjs";
+import Asiakas from "./Asiakas";
+
 
 
 function Trainings()
@@ -45,27 +47,6 @@ function Trainings()
         }
     }
 
-    const addTraining = (training) =>
-    {
-        fetch("https://customerrest.herokuapp.com/api/customers", {
-            method: 'POST',
-            headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify(training)
-        })
-            .then(response =>
-            {
-                if (response.ok)
-                {
-                    fetchTrainings();
-                } else
-                {
-                    alert("Something went wrong!")
-                }
-            })
-            .catch(err => console.error(err))
-    }
-
-
     const columns = [
         { field: 'activity', sortable: true, filter: true },
         { field: 'duration', sortable: true, filter: true },
@@ -75,13 +56,22 @@ function Trainings()
                 return dayjs(data.value).format('DD.MM.YYYY')
             }
         },
+        {
+            headerName: 'Customer',
+            field: 'links',
+            sortable: true,
+            cellRenderer: (link) =>
+            {
+                return <Asiakas customerLink={link.data.links[2].href} />
+            }
+        },
 
         {
             headerName: '',
             width: 100,
-            field: 'links[1].href',
+            field: 'links',
             cellRenderer: params =>
-                <IconButton color='error' onClick={() => deleteTraining(params.value)}>
+                <IconButton color='error' onClick={() => deleteTraining(params.data.links[0].href)}>
                     <DeleteIcon />
                 </IconButton>
         }

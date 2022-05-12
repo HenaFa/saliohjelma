@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useState } from 'react';
-import Trainings from './Training/Trainings';
-import Customers from './Customer/Customers';
-
+import Trainings from './Trainings';
+import Customers from './Customers';
 
 function Navigointi()
 {
