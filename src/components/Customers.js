@@ -7,7 +7,6 @@ import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Snackbar from '@mui/material/Snackbar';
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import Addcustomer from "./Addcustomer";
 import Editcustomer from "./Editcustomer";
 import AddTraining from "./AddTraining";
@@ -105,10 +104,12 @@ function Customers()
             {
                 if (response.ok)
                 {
-                    //fetchTrainigs();
+                    setMsg("Training Added");
+                    setOpen(true);
+                    fetchCustomers();
                 } else
                 {
-                    alert("Something went wrong!")
+                    alert("Something went wrong when adding training!")
                 }
             })
             .catch(err => console.error(err))
@@ -124,11 +125,11 @@ function Customers()
         {
             headerName: '',
             field: 'links',
-            width: 100, cellRenderer: params =>
+            width: 150, cellRenderer: params =>
             {
-                return <IconButton color='info' onClick={() => AddTraining(params.data.links[0].href)}>
-                    <AddTaskIcon />
-                </IconButton>
+                return <>
+                    <AddTraining addTraining={addTraining} linkki={params.data.links[0].href} />
+                </>
             }
         },
         {

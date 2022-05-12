@@ -5,16 +5,23 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from "dayjs";
+import { DateTimePicker } from '@mui/lab';
 
 
-function AddTraining({ addTraining })
+function AddTraining({ addTraining, linkki })
 {
+
     const [open, setOpen] = React.useState(false);
     const [training, setTraining] = React.useState({
         activity: '',
         duration: '',
         date: '',
-        customer: ''
+        customer: linkki
     })
 
     const handleClickOpen = () =>
@@ -30,13 +37,7 @@ function AddTraining({ addTraining })
     const handleSave = () =>
     {
         addTraining(training);
-        setTraining({
-            activity: '',
-            duration: '',
-            date: '',
-            customer: ''
-        })
-        setOpen(false);
+
     }
 
     const inputChanged = (event) =>
@@ -46,12 +47,23 @@ function AddTraining({ addTraining })
 
     return (
         <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                New Training
-            </Button>
+            <IconButton onClick={handleClickOpen}>
+                <AddTaskIcon />
+            </IconButton>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>New Training</DialogTitle>
+                <DialogTitle>Add Training</DialogTitle>
                 <DialogContent>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateTimePicker
+                            label="Select Date"
+                            value={training.date}
+                            onChange={(newValue) =>
+                            {
+                                setTraining({ ...training, date: dayjs(newValue) });
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
                     <TextField
                         name="activity"
                         value={training.activity}
@@ -63,29 +75,11 @@ function AddTraining({ addTraining })
                     />
                     <TextField
                         name="duration"
+                        type="number"
                         value={training.duration}
                         onChange={inputChanged}
                         margin="dense"
                         label="Duration"
-                        fullWidth
-                        variant="standard"
-                    />
-                    {<TextField
-                        name="date"
-                        value={training.date}
-                        onChange={inputChanged}
-                        margin="dense"
-                        label="Date"
-                        fullWidth
-                        variant="standard"
-                    />}
-
-                    <TextField
-                        name="customer"
-                        value={training.customer()}
-                        onChange={inputChanged}
-                        margin="dense"
-                        label="Customer"
                         fullWidth
                         variant="standard"
                     />
